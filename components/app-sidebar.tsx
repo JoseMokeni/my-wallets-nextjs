@@ -12,13 +12,15 @@ import {
 } from "@/components/ui/sidebar";
 import { Wallet, Tag, ChartAreaIcon, User2, ChevronUp } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
+import { useSession } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOutUser } from "@/lib/actions";
 
 const items: { title: string; url: string; icon: React.ComponentType }[] = [
   {
@@ -39,6 +41,7 @@ const items: { title: string; url: string; icon: React.ComponentType }[] = [
 ];
 
 export function AppSidebar() {
+  const { data: session } = useSession();
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -65,8 +68,8 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <User2 /> Username
+                <SidebarMenuButton className="hover:cursor-pointer">
+                  <User2 /> {session?.user?.name || "User"}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -78,7 +81,7 @@ export function AppSidebar() {
                 <DropdownMenuItem>
                   <span>Account</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => signOutUser()}>
                   <span>Sign out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>

@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { prisma } from "@/prisma";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
@@ -34,6 +34,10 @@ export async function signInWithCredentials(formData: FormData) {
     }
     throw error;
   }
+}
+
+export async function signOutUser() {
+  await signOut({ redirectTo: "/login" });
 }
 
 export async function registerWithCredentials(formData: FormData) {

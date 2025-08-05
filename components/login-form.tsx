@@ -39,7 +39,7 @@ export function LoginForm({
       case "CredentialsSignin":
         return "Invalid credentials. Please check your email and password.";
       case "AuthError":
-        return "An authentication error occurred. Please try again.";
+        return "Invalid credentials. Please check your email and password.";
       default:
         return "An error occurred. Please try again.";
     }
