@@ -1,7 +1,7 @@
 "use server";
 
 import { signIn } from "@/auth";
-import { PrismaClient } from "./generated/prisma";
+import { prisma } from "@/prisma";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
@@ -22,7 +22,7 @@ export async function signInWithApple() {
 
 export async function signInWithCredentials(formData: FormData) {
   try {
-    await signIn("credentials", formData);
+    await signIn("credentials", { formData, redirectTo: "/" });
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
@@ -44,32 +44,41 @@ export async function registerWithCredentials(formData: FormData) {
 
   // Add password validation
   if (password !== confirmPassword) {
-    throw new Error("Passwords do not match");
+    redirect("/register?error=PasswordMismatch");
   }
 
   // Hash the password before storing
   const hashedPassword = await bcrypt.hash(password, 12);
 
-  // create the user using prisma
-  const prisma = new PrismaClient();
-  const user = await prisma.user.create({
-    data: {
-      name,
+  try {
+    // create the user using prisma
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+      },
+    });
+
+    if (!user) {
+      redirect("/register?error=RegistrationFailed");
+    }
+
+    console.log(`User registered: ${user}`);
+
+    // After successful registration, sign them in
+    await signIn("credentials", {
       email,
-      password: hashedPassword,
-    },
-  });
+      password,
+      redirectTo: "/",
+    });
+  } catch (error: any) {
+    // Handle Prisma unique constraint violation for email
+    if (error.code === "P2002" && error.meta?.target?.includes("email")) {
+      redirect("/register?error=EmailAlreadyExists");
+    }
 
-  if (!user) {
-    throw new Error("User registration failed");
+    // Handle other registration errors
+    redirect("/register?error=RegistrationFailed");
   }
-
-  console.log(`User registered: ${user}`);
-
-  // After successful registration, sign them in
-  await signIn("credentials", {
-    email,
-    password,
-    redirectTo: "/",
-  });
 }

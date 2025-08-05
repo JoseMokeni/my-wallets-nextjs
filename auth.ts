@@ -1,12 +1,15 @@
 import NextAuth from "next-auth";
 import Github from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
-import { PrismaClient } from "@/lib/generated/prisma/client";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { prisma } from "@/prisma";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient();
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: "database",
+  },
   providers: [
     Github,
     Credentials({
@@ -41,7 +44,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // Verify password
         const isPasswordValid = await bcrypt.compare(
           credentials.password as string,
-          user.password
+          user.password as string
         );
 
         if (!isPasswordValid) {
@@ -61,9 +64,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn({ user, account, profile, email, credentials }) {
       // If using credentials provider and user is null, redirect to register
       if (account?.provider === "credentials" && !user) {
-        return "/register?error=CredentialsSignin";
+        return false;
+        // return "/register?error=CredentialsSignin";
       }
-      return "/";
+      return true;
+      // return "/";
     },
   },
 });

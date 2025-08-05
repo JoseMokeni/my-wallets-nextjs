@@ -39,6 +39,12 @@ export function RegisterForm({
     switch (error) {
       case "UserNotFound":
         return "No account found with those credentials. Please register to continue.";
+      case "EmailAlreadyExists":
+        return "An account with this email already exists. Please use a different email or try logging in.";
+      case "PasswordMismatch":
+        return "Passwords do not match. Please ensure both password fields are identical.";
+      case "RegistrationFailed":
+        return "Registration failed. Please try again.";
       default:
         return "An error occurred. Please try again.";
     }
