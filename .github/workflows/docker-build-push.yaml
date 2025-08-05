@@ -29,8 +29,8 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            my-wallets-nextjs:${{ github.sha }}
-            my-wallets-nextjs:latest
+            ${{ secrets.DOCKER_USERNAME }}/my-wallets-nextjs:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/my-wallets-nextjs:latest
           cache-from: type=registry,ref=my-wallets-nextjs:cache
           cache-to: type=registry,ref=my-wallets-nextjs:cache,mode=max
           build-args: |
