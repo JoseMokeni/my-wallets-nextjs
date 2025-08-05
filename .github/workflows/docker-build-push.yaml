@@ -31,8 +31,8 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/my-wallets-nextjs:${{ github.sha }}
             ${{ secrets.DOCKER_USERNAME }}/my-wallets-nextjs:latest
-          cache-from: type=registry,ref=my-wallets-nextjs:cache
-          cache-to: type=registry,ref=my-wallets-nextjs:cache,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             NODE_ENV=production
             # Add any other build arguments here
