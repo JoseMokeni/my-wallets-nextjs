@@ -27,7 +27,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
       },
       authorize: async (credentials) => {
-        if (!credentials) {
+        if (!credentials || !credentials.email || !credentials.password) {
+          console.log("Missing credentials");
           return null;
         }
 
@@ -39,6 +40,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         // If user not found, return null (NextAuth will handle this)
         if (!user) {
+          console.log("User not found");
+          return null;
+        }
+
+        // Check if user has a password (might be null for OAuth users)
+        if (!user.password) {
+          console.log("User has no password set");
           return null;
         }
 
@@ -49,6 +57,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         );
 
         if (!isPasswordValid) {
+          console.log("Invalid password");
           return null;
         }
 

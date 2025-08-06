@@ -22,7 +22,14 @@ export async function signInWithApple() {
 
 export async function signInWithCredentials(formData: FormData) {
   try {
-    await signIn("credentials", { formData, redirectTo: "/" });
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    await signIn("credentials", {
+      email,
+      password,
+      redirectTo: "/",
+    });
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
@@ -67,15 +74,6 @@ export async function registerWithCredentials(formData: FormData) {
     if (!user) {
       redirect("/register?error=RegistrationFailed");
     }
-
-    console.log(`User registered: ${user}`);
-
-    // After successful registration, sign them in
-    await signIn("credentials", {
-      email,
-      password,
-      redirectTo: "/",
-    });
   } catch (error: any) {
     // Handle Prisma unique constraint violation for email
     if (error.code === "P2002" && error.meta?.target?.includes("email")) {
@@ -85,4 +83,9 @@ export async function registerWithCredentials(formData: FormData) {
     // Handle other registration errors
     redirect("/register?error=RegistrationFailed");
   }
+  await signIn("credentials", {
+    email,
+    password,
+    redirectTo: "/",
+  });
 }

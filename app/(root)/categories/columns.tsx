@@ -16,6 +16,10 @@ import {
   Fuel,
   ShoppingBag,
 } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const iconMap = {
   ShoppingCart,
@@ -68,6 +72,52 @@ export const columns: ColumnDef<Category>[] = [
     cell: ({ row }) => {
       const category = row.original;
       return category.userId ? "Custom" : "Default";
+    },
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      const router = useRouter();
+      const [isDeleting, setIsDeleting] = useState(false);
+
+      const handleDelete = async (id: string) => {
+        if (isDeleting) return;
+
+        setIsDeleting(true);
+        try {
+          const response = await fetch(`/api/categories/${id}`, {
+            method: "DELETE",
+          });
+
+          if (!response.ok) {
+            toast.error("Failed to delete category");
+            return;
+          }
+
+          toast.success("Category deleted successfully");
+
+          // Force a hard refresh of the page
+          window.location.reload();
+        } catch (error) {
+          console.error("Error deleting category:", error);
+          toast.error("Failed to delete category");
+        } finally {
+          setIsDeleting(false);
+        }
+      };
+
+      return row.original.userId ? (
+        <Button
+          variant="destructive"
+          onClick={() => handleDelete(row.original.id)}
+          disabled={isDeleting}
+        >
+          {isDeleting ? "Deleting..." : "Delete"}
+        </Button>
+      ) : (
+        ""
+      );
     },
   },
 ];
