@@ -1,34 +1,71 @@
-import { auth } from "@/auth";
+"use client";
+
+import { DataTable } from "@/components/ui/data-table";
 import { Category } from "@/lib/generated/prisma";
-import { prisma } from "@/prisma";
+import React, { useEffect, useState } from "react";
+import { columns } from "./columns";
+import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import React from "react";
+import CreateCategoryDialog from "./dialog";
 
-const Page = async () => {
-  const session = await auth();
-  if (!session?.user) {
-    return redirect("/login");
+const Page = () => {
+  const { data: session, status } = useSession();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchCategories = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("/api/categories");
+      if (!response.ok) {
+        throw new Error("Failed to fetch categories");
+      }
+      const data = await response.json();
+      setCategories(data);
+      setError(null);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      setError("Error loading categories");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (status === "loading") return;
+
+    if (!session?.user) {
+      redirect("/login");
+      return;
+    }
+
+    fetchCategories();
+  }, [session, status]);
+
+  const handleCreateCategory = () => {
+    console.log("Create Category");
+  };
+
+  if (status === "loading" || loading) {
+    return <div>Loading...</div>;
   }
 
-  const userId = session.user.id;
-
-  let categories: Category[] = [];
-
-  try {
-    categories = await prisma.category.findMany({
-      where: {
-        OR: [{ userId: null }, { userId: userId as string }],
-      },
-      orderBy: { createdAt: "desc" },
-    });
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    return <div>Error loading categories</div>;
+  if (error) {
+    return <div>{error}</div>;
   }
 
-  console.log("Categories:", categories);
-
-  return <div>Categories</div>;
+  return (
+    <div className="w-full">
+      <h1 className="text-2xl font-bold mb-4">Categories</h1>
+      {categories.length === 0 ? (
+        <p className="text-gray-500">No categories found.</p>
+      ) : null}
+      <CreateCategoryDialog onCategoryCreated={fetchCategories} />
+      <DataTable columns={columns} data={categories} />
+    </div>
+  );
 };
 
 export default Page;
