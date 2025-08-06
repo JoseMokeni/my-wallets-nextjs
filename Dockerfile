@@ -46,7 +46,11 @@ RUN npm install -g tsx
 
 # Copy Prisma files including seed script
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
-
+# Copy Prisma client files
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
+# Copy the generated Prisma client from lib folder
+COPY --from=builder --chown=nextjs:nodejs /app/lib ./lib
 
 # Copy the standalone build
 COPY --from=builder /app/public ./public
