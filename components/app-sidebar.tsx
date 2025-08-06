@@ -51,10 +51,15 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    className="h-12 md:h-auto text-base md:text-sm px-4 md:px-3 py-3 md:py-2"
+                  >
                     <Link href={item.url}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span className="font-medium md:font-normal">
+                        {item.title}
+                      </span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -68,9 +73,12 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className="hover:cursor-pointer">
-                  <User2 /> {session?.user?.name || "User"}
-                  <ChevronUp className="ml-auto" />
+                <SidebarMenuButton className="hover:cursor-pointer h-12 md:h-auto text-base md:text-sm px-4 md:px-3 py-3 md:py-2">
+                  <User2 className="h-5 w-5 md:h-4 md:w-4" />
+                  <span className="font-medium md:font-normal">
+                    {session?.user?.name || "User"}
+                  </span>
+                  <ChevronUp className="ml-auto h-5 w-5 md:h-4 md:w-4" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -78,10 +86,13 @@ export function AppSidebar() {
                 align="start"
                 className="w-[var(--radix-popper-anchor-width)]"
               >
-                <DropdownMenuItem>
+                <DropdownMenuItem className="h-10 md:h-auto text-base md:text-sm">
                   <span>Account</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => signOutUser()}>
+                <DropdownMenuItem
+                  onClick={() => signOutUser()}
+                  className="h-10 md:h-auto text-base md:text-sm"
+                >
                   <span>Sign out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
