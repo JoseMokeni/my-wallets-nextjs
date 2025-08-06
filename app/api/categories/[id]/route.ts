@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -14,7 +14,7 @@ export async function DELETE(
     }
     const userId = session.user.id;
 
-    const categoryId = params.id;
+    const { id: categoryId } = await params;
     const category = await prisma.category.findUnique({
       where: { id: categoryId, userId: userId as string },
     });
