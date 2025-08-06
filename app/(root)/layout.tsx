@@ -10,7 +10,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <AppSidebar />
         <main>
           <SidebarTrigger />
-          {children}
+          <div className="p-4">{children}</div>
         </main>
       </SidebarProvider>
     </SessionProvider>
