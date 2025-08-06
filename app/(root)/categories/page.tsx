@@ -63,7 +63,11 @@ const Page = () => {
         <p className="text-gray-500">No categories found.</p>
       ) : null}
       <CreateCategoryDialog onCategoryCreated={fetchCategories} />
-      <DataTable columns={columns} data={categories} />
+      <DataTable
+        columns={columns}
+        data={categories}
+        hideColumnsOnMobile={["createdAt"]}
+      />
     </div>
   );
 };
