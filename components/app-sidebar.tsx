@@ -9,11 +9,13 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Wallet, Tag, ChartAreaIcon, User2, ChevronUp } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,6 +44,17 @@ const items: { title: string; url: string; icon: React.ComponentType }[] = [
 
 export function AppSidebar() {
   const { data: session } = useSession();
+  const { setOpenMobile } = useSidebar();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setOpenMobile(false);
+  }, [pathname, setOpenMobile]);
+
+  const handleLinkClick = () => {
+    setOpenMobile(false);
+  };
+
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -55,7 +68,7 @@ export function AppSidebar() {
                     asChild
                     className="h-12 md:h-auto text-base md:text-sm px-4 md:px-3 py-3 md:py-2"
                   >
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={handleLinkClick}>
                       <item.icon />
                       <span className="font-medium md:font-normal">
                         {item.title}

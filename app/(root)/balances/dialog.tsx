@@ -19,9 +19,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Balance } from "@/lib/generated/prisma";
 
 interface CreateBalanceDialogProps {
-  onBalanceCreated?: () => void;
+  onBalanceCreated?: (balance: Balance) => void;
 }
 
 const CreateBalanceDialog = ({
@@ -29,7 +30,7 @@ const CreateBalanceDialog = ({
 }: CreateBalanceDialogProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("");
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -73,7 +74,7 @@ const CreateBalanceDialog = ({
 
       // Refresh categories list
       if (onBalanceCreated) {
-        onBalanceCreated();
+        onBalanceCreated(newBalance);
       }
     } catch (error) {
       console.error("Error creating category:", error);
