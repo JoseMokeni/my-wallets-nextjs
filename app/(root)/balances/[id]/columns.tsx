@@ -1,13 +1,9 @@
 "use client";
 
-import { Category } from "@/lib/generated/prisma";
+import { Category, Transaction } from "@/lib/generated/prisma";
 import { ColumnDef } from "@tanstack/react-table";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
-export const columns: ColumnDef<Category>[] = [
+export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "date",
     header: "Date",
@@ -49,50 +45,4 @@ export const columns: ColumnDef<Category>[] = [
       return category.charAt(0).toUpperCase() + category.slice(1);
     },
   },
-  // {
-  //   id: "actions",
-  //   header: "Actions",
-  //   cell: ({ row }) => {
-  //     const router = useRouter();
-  //     const [isDeleting, setIsDeleting] = useState(false);
-
-  //     const handleDelete = async (id: string) => {
-  //       if (isDeleting) return;
-
-  //       setIsDeleting(true);
-  //       try {
-  //         const response = await fetch(`/api/categories/${id}`, {
-  //           method: "DELETE",
-  //         });
-
-  //         if (!response.ok) {
-  //           toast.error("Failed to delete category");
-  //           return;
-  //         }
-
-  //         toast.success("Category deleted successfully");
-
-  //         // Force a hard refresh of the page
-  //         window.location.reload();
-  //       } catch (error) {
-  //         console.error("Error deleting category:", error);
-  //         toast.error("Failed to delete category");
-  //       } finally {
-  //         setIsDeleting(false);
-  //       }
-  //     };
-
-  //     return row.original.userId ? (
-  //       <Button
-  //         variant="destructive"
-  //         onClick={() => handleDelete(row.original.id)}
-  //         disabled={isDeleting}
-  //       >
-  //         {isDeleting ? "Deleting..." : "Delete"}
-  //       </Button>
-  //     ) : (
-  //       ""
-  //     );
-  //   },
-  // },
 ];

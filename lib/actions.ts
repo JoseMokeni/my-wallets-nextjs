@@ -115,6 +115,34 @@ export async function fetchBalances() {
   }
 }
 
+export async function fetchBalanceById(id: string) {
+  try {
+    const session = await auth();
+
+    if (!session?.user) {
+      return null;
+    }
+
+    const user = session.user;
+
+    const balance = await prisma.balance.findUnique({
+      where: {
+        id,
+        userId: user.id,
+      },
+    });
+
+    if (balance?.userId !== user.id) {
+      return null;
+    }
+
+    return balance;
+  } catch (error) {
+    console.error("Error fetching balance by ID:", error);
+    return null;
+  }
+}
+
 export async function fetchTransactions() {
   try {
     const session = await auth();
@@ -130,6 +158,9 @@ export async function fetchTransactions() {
       },
       orderBy: {
         createdAt: "desc",
+      },
+      include: {
+        category: true,
       },
     });
 

@@ -17,6 +17,9 @@ export async function GET() {
         OR: [{ userId: null }, { userId: userId as string }],
       },
       orderBy: { createdAt: "desc" },
+      include: {
+        user: true,
+      },
     });
 
     return NextResponse.json(categories);

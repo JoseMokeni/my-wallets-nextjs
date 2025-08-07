@@ -22,6 +22,7 @@ const Page = () => {
         throw new Error("Failed to fetch categories");
       }
       const data = await response.json();
+      console.log("Fetched categories:", data);
       setCategories(data);
       setError(null);
     } catch (error) {
