@@ -170,3 +170,92 @@ export async function fetchTransactions() {
     return [];
   }
 }
+
+export async function fetchTransactionsByBalanceId(balanceId: string) {
+  try {
+    const session = await auth();
+
+    if (!session?.user) {
+      return [];
+    }
+    const user = session.user;
+
+    // check if the balance belongs to the user
+    const balance = await prisma.balance.findUnique({
+      where: {
+        id: balanceId,
+        userId: user.id,
+      },
+    });
+
+    if (!balance || balance.userId !== user.id) {
+      return [];
+    }
+
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        userId: user.id,
+        balanceId: balanceId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        category: true,
+        balance: true,
+      },
+    });
+
+    console.log("Fetched transactions:", transactions);
+
+    return transactions;
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    return [];
+  }
+}
+
+export async function createTransaction(formData: FormData) {
+  try {
+    const session = await auth();
+
+    if (!session?.user) {
+      return null;
+    }
+
+    const user = session.user;
+
+    const transaction = await prisma.transaction.create({
+      data: {
+        userId: user.id,
+        amount: parseFloat(formData.get("amount") as string),
+        type: formData.get("type") as string,
+        description: formData.get("description") as string,
+        categoryId: formData.get("categoryId") as string,
+        balanceId: formData.get("balanceId") as string,
+      },
+      include: {
+        category: true,
+        balance: true,
+      },
+    });
+
+    // update balance
+    await prisma.balance.update({
+      where: {
+        id: transaction.balanceId as string,
+      },
+      data: {
+        amount: {
+          [transaction.type === "income" ? "increment" : "decrement"]:
+            transaction.amount,
+        },
+      },
+    });
+
+    return transaction;
+  } catch (error) {
+    console.error("Error creating transaction:", error);
+    return null;
+  }
+}

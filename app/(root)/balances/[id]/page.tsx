@@ -1,10 +1,11 @@
 "use client";
 import { DataTable } from "@/components/ui/data-table";
 import { Balance, Transaction } from "@/lib/generated/prisma";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { columns } from "./columns";
-import { fetchTransactions, fetchBalanceById } from "@/lib/actions";
+import { fetchTransactionsByBalanceId, fetchBalanceById } from "@/lib/actions";
+import CreateTransactionDialog from "./create-dialog";
 
 const Page = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -13,7 +14,7 @@ const Page = () => {
   const { id } = useParams();
 
   const getData = async () => {
-    const data = await fetchTransactions();
+    const data = await fetchTransactionsByBalanceId(id as string);
     setTransactions(data);
   };
 
@@ -22,10 +23,23 @@ const Page = () => {
     setBalance(data);
   };
 
+  const handleTransactionCreated = (transaction: Transaction) => {
+    setTransactions((prev) => [transaction, ...prev]);
+    // update amount
+    setBalance((prev) => {
+      if (!prev) return null;
+      const newAmount =
+        transaction.type === "income"
+          ? prev.amount + transaction.amount
+          : prev.amount - transaction.amount;
+      return { ...prev, amount: newAmount };
+    });
+  };
+
   useEffect(() => {
     getData();
     getBalance();
-  }, []);
+  }, [id]);
 
   return (
     <div className="w-full">
@@ -33,11 +47,28 @@ const Page = () => {
         Transactions for{" "}
         {balance ? `balance : ${balance.name}` : "this balance"}
       </h1>
+      {balance ? (
+        <p>
+          Amount:{" "}
+          {balance.amount.toLocaleString("en-US", {
+            style: "currency",
+            currency: balance.currency || "USD",
+          })}
+        </p>
+      ) : null}
+
       {transactions.length === 0 ? (
         <p className="text-gray-500">No transactions found.</p>
       ) : null}
-      {/* <CreateTransactionDialog onTransactionCreated={fetchTransactions} /> */}
-      <DataTable columns={columns} data={transactions} />
+      <CreateTransactionDialog
+        balance={balance}
+        onTransactionCreated={handleTransactionCreated}
+      />
+      <DataTable
+        columns={columns}
+        data={transactions}
+        hideColumnsOnMobile={["category"]}
+      />
     </div>
   );
 };
