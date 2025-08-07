@@ -29,8 +29,8 @@ const items: { title: string; url: string; icon: React.ComponentType }[] = [
     icon: ChartAreaIcon,
   },
   {
-    title: "Accounts",
-    url: "/accounts",
+    title: "Balances",
+    url: "/balances",
     icon: Wallet,
   },
   {

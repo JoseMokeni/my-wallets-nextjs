@@ -25,6 +25,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   categories    Category[]
+  balances     Balance[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -80,3 +81,15 @@ model Category {
   userId    String?
 
 }
+
+model Balance {
+  id        String   @id @default(cuid())
+  name      String
+  amount    Float
+  currency  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+} 

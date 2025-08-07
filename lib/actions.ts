@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn, signOut } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { prisma } from "@/prisma";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
@@ -88,4 +88,29 @@ export async function registerWithCredentials(formData: FormData) {
     password,
     redirectTo: "/",
   });
+}
+
+export async function fetchBalances() {
+  try {
+    const session = await auth();
+
+    if (!session?.user) {
+      return [];
+    }
+    const user = session.user;
+
+    const balances = await prisma.balance.findMany({
+      where: {
+        userId: user.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return balances;
+  } catch (error) {
+    console.error("Error fetching balances:", error);
+    return [];
+  }
 }
