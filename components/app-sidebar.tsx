@@ -99,9 +99,6 @@ export function AppSidebar() {
                 align="start"
                 className="w-[var(--radix-popper-anchor-width)]"
               >
-                <DropdownMenuItem className="h-10 md:h-auto text-base md:text-sm">
-                  <span>Account</span>
-                </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => signOutUser()}
                   className="h-10 md:h-auto text-base md:text-sm"
