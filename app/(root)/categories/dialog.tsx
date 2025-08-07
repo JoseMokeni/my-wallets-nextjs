@@ -31,9 +31,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ChevronDown } from "lucide-react";
+import { Category } from "@/lib/generated/prisma";
 
 interface CreateCategoryDialogProps {
-  onCategoryCreated?: () => void;
+  onCategoryCreated?: (category: Category) => void;
 }
 
 const CreateCategoryDialog = ({
@@ -88,6 +89,8 @@ const CreateCategoryDialog = ({
         throw new Error("Failed to create category");
       }
 
+      const newCategory = await response.json();
+
       // Reset form and close dialog
       setSelectedIcon("ShoppingCart");
       setIsPopoverOpen(false);
@@ -97,9 +100,9 @@ const CreateCategoryDialog = ({
         event.currentTarget.reset();
       }
 
-      // Refresh categories list
+      // Add new category to the list
       if (onCategoryCreated) {
-        onCategoryCreated();
+        onCategoryCreated(newCategory);
       }
     } catch (error) {
       console.error("Error creating category:", error);

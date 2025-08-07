@@ -114,3 +114,28 @@ export async function fetchBalances() {
     return [];
   }
 }
+
+export async function fetchTransactions() {
+  try {
+    const session = await auth();
+
+    if (!session?.user) {
+      return [];
+    }
+    const user = session.user;
+
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        userId: user.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return transactions;
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    return [];
+  }
+}

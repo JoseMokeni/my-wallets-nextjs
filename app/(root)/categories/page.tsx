@@ -4,7 +4,6 @@ import { DataTable } from "@/components/ui/data-table";
 import { Category } from "@/lib/generated/prisma";
 import React, { useEffect, useState } from "react";
 import { columns } from "./columns";
-import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import CreateCategoryDialog from "./dialog";
@@ -44,8 +43,14 @@ const Page = () => {
     fetchCategories();
   }, [session, status]);
 
-  const handleCreateCategory = () => {
-    console.log("Create Category");
+  const handleCreateCategory = (category: Category) => {
+    setCategories((prev) => [category, ...prev]);
+  };
+
+  const handleCategoryDelete = (id: string) => {
+    setCategories((categories) =>
+      categories.filter((category) => category.id !== id)
+    );
   };
 
   if (status === "loading" || loading) {
@@ -62,11 +67,14 @@ const Page = () => {
       {categories.length === 0 ? (
         <p className="text-gray-500">No categories found.</p>
       ) : null}
-      <CreateCategoryDialog onCategoryCreated={fetchCategories} />
+      <CreateCategoryDialog onCategoryCreated={handleCreateCategory} />
       <DataTable
         columns={columns}
         data={categories}
         hideColumnsOnMobile={["createdAt"]}
+        meta={{
+          handleCategoryDelete,
+        }}
       />
     </div>
   );

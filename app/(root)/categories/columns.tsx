@@ -77,7 +77,7 @@ export const columns: ColumnDef<Category>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
       const router = useRouter();
       const [isDeleting, setIsDeleting] = useState(false);
 
@@ -97,8 +97,11 @@ export const columns: ColumnDef<Category>[] = [
 
           toast.success("Category deleted successfully");
 
-          // Force a hard refresh of the page
-          window.location.reload();
+          // Call the callback from the parent component to refresh data
+          const meta = table.options.meta as {
+            handleCategoryDelete?: (id: string) => void;
+          };
+          meta?.handleCategoryDelete?.(row.original.id);
         } catch (error) {
           console.error("Error deleting category:", error);
           toast.error("Failed to delete category");

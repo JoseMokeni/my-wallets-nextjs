@@ -23,16 +23,19 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   hideColumnsOnMobile?: string[]; // Add optional prop for columns to hide on mobile
+  meta?: any;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   hideColumnsOnMobile = [],
+  meta,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
+    meta,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
