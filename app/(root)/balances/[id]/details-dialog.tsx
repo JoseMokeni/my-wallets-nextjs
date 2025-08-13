@@ -57,7 +57,7 @@ const TransactionDetailsDialog = ({
 }: TransactionDetailsDialogProps) => {
   if (!transaction) return null;
 
-  const iconName = transaction.category.icon as keyof typeof iconMap;
+  const iconName = transaction.category?.icon as keyof typeof iconMap;
   const IconComponent = iconMap[iconName] || ShoppingCart;
 
   return (
@@ -96,8 +96,14 @@ const TransactionDetailsDialog = ({
           <div className="flex items-center justify-between">
             <span className="font-medium">Category:</span>
             <div className="flex items-center gap-2">
-              <IconComponent size={16} />
-              <span>{transaction.category.name}</span>
+              {transaction.category ? (
+                <>
+                  <IconComponent size={16} />
+                  <span>{transaction.category.name}</span>
+                </>
+              ) : (
+                <span>-</span>
+              )}
             </div>
           </div>
 

@@ -52,7 +52,7 @@ const CreateTransactionDialog = ({
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [amountError, setAmountError] = useState("");
-  const [transactionType, setTransactionType] = useState("");
+  const [transactionType, setTransactionType] = useState("income");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,6 +91,12 @@ const CreateTransactionDialog = ({
 
   const handleTypeChange = (type: string) => {
     setTransactionType(type);
+
+    // Clear category selection when switching to income
+    if (type === "income") {
+      setSelectedCategory("");
+    }
+
     const amountInput = document.getElementById("amount") as HTMLInputElement;
     if (amountInput && amountInput.value) {
       const amount = parseFloat(amountInput.value);
@@ -106,10 +112,9 @@ const CreateTransactionDialog = ({
     try {
       const formData = new FormData(event.currentTarget);
       const amount = parseFloat(formData.get("amount") as string);
-      const description = formData.get("description") as string;
       const type = formData.get("type") as string;
 
-      if (isNaN(amount) || !type || !selectedCategory) {
+      if (isNaN(amount) || !type) {
         toast.error("Please fill in all required fields correctly.");
         return;
       }
@@ -201,18 +206,25 @@ const CreateTransactionDialog = ({
             <Label htmlFor="type" className="mt-4">
               Type *
             </Label>
-            <Select name="type" onValueChange={handleTypeChange} required>
+            <Select
+              name="type"
+              onValueChange={handleTypeChange}
+              defaultValue="income"
+              required
+            >
               <SelectTrigger className="mt-2 w-full">
                 <SelectValue placeholder="Select transaction type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="income">Income</SelectItem>
+                <SelectItem value="income" defaultChecked>
+                  Income
+                </SelectItem>
                 <SelectItem value="expense">Expense</SelectItem>
               </SelectContent>
             </Select>
 
             <Label htmlFor="categoryId" className="mt-4">
-              Category *
+              Category {transactionType !== "income" && "*"}
             </Label>
             <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
               <PopoverTrigger asChild>
@@ -221,11 +233,14 @@ const CreateTransactionDialog = ({
                   role="combobox"
                   aria-expanded={categoryOpen}
                   className="mt-2 w-full justify-between"
+                  disabled={transactionType === "income"}
                 >
-                  {selectedCategory
+                  {selectedCategory && transactionType !== "income"
                     ? categories.find(
                         (category) => category.id === selectedCategory
                       )?.name
+                    : transactionType === "income"
+                    ? "No category for income"
                     : "Select category..."}
                   <ChevronsUpDown className="ml-2 w-4 h-4 shrink-0 opacity-50" />
                 </Button>

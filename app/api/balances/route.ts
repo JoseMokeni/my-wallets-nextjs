@@ -27,6 +27,18 @@ export async function POST(request: Request) {
         userId: userId as string,
       },
     });
+
+    const newTransaction = await prisma.transaction.create({
+      data: {
+        userId: userId as string,
+        amount,
+        type: "income",
+        description: "Initial balance",
+        categoryId: null,
+        balanceId: newBalance.id,
+      },
+    });
+
     return NextResponse.json(newBalance, { status: 201 });
   } catch (error) {
     console.error("Error creating balance:", error);

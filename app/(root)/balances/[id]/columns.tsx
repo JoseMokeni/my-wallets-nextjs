@@ -107,6 +107,7 @@ export const columns: ColumnDef<Transaction>[] = [
     header: "Category",
     cell: ({ row }) => {
       const category = row.getValue("category") as Category;
+      if (!category) return "-";
       const iconName = category.icon as keyof typeof iconMap;
       const IconComponent = iconMap[iconName] || ShoppingCart;
       return (

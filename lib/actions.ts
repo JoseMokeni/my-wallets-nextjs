@@ -231,7 +231,10 @@ export async function createTransaction(formData: FormData) {
         amount: parseFloat(formData.get("amount") as string),
         type: formData.get("type") as string,
         description: formData.get("description") as string,
-        categoryId: formData.get("categoryId") as string,
+        categoryId:
+          (formData.get("categoryId") as string) === ""
+            ? null
+            : (formData.get("categoryId") as string),
         balanceId: formData.get("balanceId") as string,
       },
       include: {
