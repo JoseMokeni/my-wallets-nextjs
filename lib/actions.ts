@@ -13,7 +13,9 @@ export async function signInWithGithub() {
 }
 
 export async function signInWithGoogle() {
-  await signIn("google");
+  await signIn("google", {
+    redirectTo: "/",
+  });
 }
 
 export async function signInWithApple() {

@@ -1,11 +1,20 @@
 "use client";
 import { RegisterForm } from "@/components/register-form";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Suspense, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 function RegisterContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { data: session, status } = useSession();
   const error = searchParams.get("error");
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/");
+    }
+  }, [status, router]);
 
   return <RegisterForm error={error} />;
 }

@@ -14,7 +14,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   providers: [
     Github,
-    Google,
+    Google({
+      allowDangerousEmailAccountLinking: true,
+    }),
     Credentials({
       credentials: {
         email: {
@@ -127,4 +129,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return baseUrl;
     },
   },
+  // debug: process.env.NODE_ENV === "development",
 });

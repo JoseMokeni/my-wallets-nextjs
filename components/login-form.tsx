@@ -38,8 +38,12 @@ export function LoginForm({
         return "Invalid email or password. Please try again.";
       case "CredentialsSignin":
         return "Invalid credentials. Please check your email and password.";
+      case "EmailAlreadyExists":
+        return "An account with this email already exists. Please use a different email or try logging in.";
       case "AuthError":
         return "Invalid credentials. Please check your email and password.";
+      case "OAuthAccountNotLinked":
+        return "This email is not linked to any account. Please go to register.";
       default:
         return "An error occurred. Please try again.";
     }
