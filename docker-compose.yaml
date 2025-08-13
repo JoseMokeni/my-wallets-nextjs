@@ -16,6 +16,8 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - .:/app
+      - /app/node_modules
+      - /app/lib/generated
     ports:
       - "3000:3000"
     environment:
