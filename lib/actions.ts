@@ -30,7 +30,7 @@ export async function signInWithCredentials(formData: FormData) {
       password,
       redirectTo: "/",
     });
-  } catch (error) {
+  } catch (error: AuthError | Error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
