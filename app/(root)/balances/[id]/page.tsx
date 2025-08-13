@@ -82,7 +82,7 @@ const Page = () => {
       </div>
 
       {filteredTransactions.length === 0 ? (
-        <p className="text-gray-500">No transactions found.</p>
+        <p className="text-muted-foregtound">No transactions found.</p>
       ) : null}
       <CreateTransactionDialog
         balance={balance}

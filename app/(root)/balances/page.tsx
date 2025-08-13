@@ -24,10 +24,10 @@ const Page = () => {
   return (
     <div className="w-full">
       <h1 className="text-2xl font-bold mb-4">Balances</h1>
-      <p className="text-gray-600">Manage your balances here.</p>
+      <p className="text-muted-foreground">Manage your balances here.</p>
       <CreateBalanceDialog onBalanceCreated={handleBalanceCreated} />
       {balances.length === 0 ? (
-        <p className="text-gray-500">No balances found.</p>
+        <p className="text-muted-foreground">No balances found.</p>
       ) : (
         <BalancesList balances={balances} />
       )}

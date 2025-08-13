@@ -66,7 +66,7 @@ const Page = () => {
     <div className="w-full">
       <h1 className="text-2xl font-bold mb-4">Categories</h1>
       {categories.length === 0 ? (
-        <p className="text-gray-500">No categories found.</p>
+        <p className="text-muted-foreground">No categories found.</p>
       ) : null}
       <CreateCategoryDialog onCategoryCreated={handleCreateCategory} />
       <DataTable
