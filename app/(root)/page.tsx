@@ -12,6 +12,8 @@ import {
   Plus,
   ArrowUpRight,
   ArrowDownRight,
+  Calendar,
+  Target,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -51,23 +53,48 @@ const Page = () => {
     loadDashboardData();
   }, []);
 
-  // Calculate total balance across all accounts
-  const totalBalance = balances.reduce(
-    (sum, balance) => sum + balance.amount,
-    0
+  // Calculate statistics
+  const totalAccounts = balances.length;
+  const totalTransactions = transactions.length;
+
+  // Get unique currencies
+  const currencies = [...new Set(balances.map((b) => b.currency))];
+
+  // Calculate this month's transactions
+  const now = new Date();
+  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const thisMonthTransactions = transactions.filter(
+    (t) => new Date(t.date) >= firstDayOfMonth
   );
 
-  // Calculate income and expenses from recent transactions
-  const income = transactions
-    .filter((t) => t.type === "income")
-    .reduce((sum, t) => sum + t.amount, 0);
+  // Most used category
+  const categoryCount = transactions.reduce((acc, t) => {
+    const categoryName = t.category?.name || "Uncategorized";
+    acc[categoryName] = (acc[categoryName] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
 
-  const expenses = transactions
-    .filter((t) => t.type === "expense")
-    .reduce((sum, t) => sum + t.amount, 0);
+  const sortedCategories = Object.entries(categoryCount).sort(
+    ([, a], [, b]) => b - a
+  );
+
+  let mostUsedCategory = "None";
+  if (sortedCategories.length > 0) {
+    // If the top category is "Uncategorized" and there's a second category, use the second one
+    if (
+      sortedCategories[0][0] === "Uncategorized" &&
+      sortedCategories.length > 1
+    ) {
+      mostUsedCategory = sortedCategories[1][0];
+    } else {
+      mostUsedCategory = sortedCategories[0][0];
+    }
+  }
 
   // Get recent transactions (last 5)
-  const recentTransactions = transactions.slice(0, 5);
+  const recentTransactions = transactions
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 5);
 
   if (loading) {
     return (
@@ -87,78 +114,57 @@ const Page = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Balance</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Accounts
+            </CardTitle>
             <Wallet className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {totalBalance.toLocaleString("en-US", {
-                style: "currency",
-                currency: balances[0]?.currency || "USD",
-              })}
-            </div>
+            <div className="text-2xl font-bold">{totalAccounts}</div>
             <p className="text-xs text-muted-foreground">
-              Across {balances.length} account{balances.length !== 1 ? "s" : ""}
+              {currencies.length} currenc{currencies.length !== 1 ? "ies" : "y"}
             </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Income</CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">
-              +
-              {income.toLocaleString("en-US", {
-                style: "currency",
-                currency: balances[0]?.currency || "USD",
-              })}
-            </div>
-            <p className="text-xs text-muted-foreground">All time income</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Expenses
+              Total Transactions
             </CardTitle>
-            <TrendingDown className="h-4 w-4 text-red-600" />
+            <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">
-              -
-              {expenses.toLocaleString("en-US", {
-                style: "currency",
-                currency: balances[0]?.currency || "USD",
-              })}
-            </div>
-            <p className="text-xs text-muted-foreground">All time expenses</p>
+            <div className="text-2xl font-bold">{totalTransactions}</div>
+            <p className="text-xs text-muted-foreground">All time activity</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Net Income</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">This Month</CardTitle>
+            <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div
-              className={`text-2xl font-bold ${
-                income - expenses >= 0 ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              {income - expenses >= 0 ? "+" : ""}
-              {(income - expenses).toLocaleString("en-US", {
-                style: "currency",
-                currency: balances[0]?.currency || "USD",
-              })}
+            <div className="text-2xl font-bold">
+              {thisMonthTransactions.length}
             </div>
             <p className="text-xs text-muted-foreground">
-              Income minus expenses
+              Transactions this month
             </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Top Category</CardTitle>
+            <Target className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold truncate">
+              {mostUsedCategory}
+            </div>
+            <p className="text-xs text-muted-foreground">Most used category</p>
           </CardContent>
         </Card>
       </div>
