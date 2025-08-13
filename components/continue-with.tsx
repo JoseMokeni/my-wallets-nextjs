@@ -22,7 +22,7 @@ const ContinueWith = () => {
           <span className="sr-only">Register with Apple</span>
         </Button>
       </form> */}
-      {/* <form action={signInWithGoogle}>
+      <form action={signInWithGoogle}>
         <Button variant="outline" type="submit" className="w-full">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path
@@ -32,7 +32,7 @@ const ContinueWith = () => {
           </svg>
           <span className="sr-only">Register with Google</span>
         </Button>
-      </form> */}
+      </form>
       <form action={signInWithGithub}>
         <Button
           variant="outline"
