@@ -39,6 +39,8 @@ const Page = () => {
 
         setBalances(fetchedBalances);
         setTransactions(fetchedTransactions as TransactionWithCategory[]);
+        console.log("Balances:", fetchedBalances);
+        console.log("Transactions:", fetchedTransactions);
       } catch (error) {
         console.error("Error loading dashboard data:", error);
       } finally {
@@ -206,7 +208,7 @@ const Page = () => {
                           {transaction.description || "No description"}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          {transaction.category?.name} •{" "}
+                          {transaction.category?.name || "No category"} •{" "}
                           {transaction.balance?.name}
                         </p>
                       </div>

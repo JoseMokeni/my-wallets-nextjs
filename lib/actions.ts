@@ -106,6 +106,9 @@ export async function fetchBalances() {
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        user: true,
+      },
     });
 
     return balances;
@@ -129,6 +132,9 @@ export async function fetchBalanceById(id: string) {
       where: {
         id,
         userId: user.id,
+      },
+      include: {
+        user: true,
       },
     });
 
@@ -161,6 +167,8 @@ export async function fetchTransactions() {
       },
       include: {
         category: true,
+        user: true,
+        balance: true,
       },
     });
 
