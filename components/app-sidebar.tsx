@@ -11,7 +11,15 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Wallet, Tag, ChartAreaIcon, User2, ChevronUp } from "lucide-react";
+import {
+  Wallet,
+  Tag,
+  ChartAreaIcon,
+  User2,
+  ChevronUp,
+  Settings,
+  LogOut,
+} from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useSession } from "next-auth/react";
@@ -99,10 +107,20 @@ export function AppSidebar() {
                 align="start"
                 className="w-[var(--radix-popper-anchor-width)]"
               >
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/account"
+                    className="h-10 md:h-auto text-base md:text-sm"
+                  >
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Account Settings</span>
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => signOutUser()}
                   className="h-10 md:h-auto text-base md:text-sm"
                 >
+                  <LogOut className="mr-2 h-4 w-4" />
                   <span>Sign out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>

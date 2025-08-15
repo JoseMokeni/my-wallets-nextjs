@@ -274,3 +274,53 @@ export async function createTransaction(formData: FormData) {
     return null;
   }
 }
+
+export async function changePassword(formData: FormData) {
+  try {
+    const session = await auth();
+
+    if (!session?.user) {
+      return { success: false, message: "Not authenticated" };
+    }
+
+    const currentPassword = formData.get("currentPassword") as string;
+    const newPassword = formData.get("newPassword") as string;
+
+    if (!currentPassword || !newPassword) {
+      return { success: false, message: "Missing required fields" };
+    }
+
+    // Get user with current password
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { id: true, password: true },
+    });
+
+    if (!user || !user.password) {
+      return { success: false, message: "User not found or no password set" };
+    }
+
+    // Verify current password
+    const isCurrentPasswordValid = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+    if (!isCurrentPasswordValid) {
+      return { success: false, message: "Current password is incorrect" };
+    }
+
+    // Hash new password
+    const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+
+    // Update password
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { password: hashedNewPassword },
+    });
+
+    return { success: true, message: "Password changed successfully" };
+  } catch (error) {
+    console.error("Error changing password:", error);
+    return { success: false, message: "Failed to change password" };
+  }
+}
