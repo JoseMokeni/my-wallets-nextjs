@@ -43,7 +43,11 @@ export function LoginForm({
       case "AuthError":
         return "Invalid credentials. Please check your email and password.";
       case "OAuthAccountNotLinked":
-        return "This email is not linked to any account. Please go to register.";
+        return "This email is already associated with an account using a different sign-in method. Please use your original sign-in method or contact support.";
+      case "Signin":
+        return "This email is already associated with an account using a different sign-in method. Please use your original sign-in method.";
+      case "AccessDenied":
+        return "This email is already associated with an account using a different sign-in method. Please use your original sign-in method or contact support.";
       default:
         return "An error occurred. Please try again.";
     }

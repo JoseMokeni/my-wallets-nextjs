@@ -14,9 +14,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   providers: [
     Github,
-    Google({
-      allowDangerousEmailAccountLinking: true,
-    }),
+    Google,
     Credentials({
       credentials: {
         email: {
@@ -73,6 +71,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   pages: {
     signIn: "/login",
+    error: "/login", // Redirect errors to login page
   },
   callbacks: {
     authorized: async ({ auth, request: { nextUrl } }) => {
@@ -94,6 +93,50 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Require authentication for all other pages
       return isLoggedIn;
     },
+    async signIn({ user, account, profile }) {
+      // If using credentials provider and user is null, redirect to register
+      if (account?.provider === "credentials" && !user) {
+        return false;
+      }
+
+      // For OAuth providers, check if there's already an account with this email
+      // but from a different provider
+      if (
+        account?.provider &&
+        account.provider !== "credentials" &&
+        profile?.email
+      ) {
+        try {
+          // Check if there's already a user with this email
+          const existingUser = await prisma.user.findUnique({
+            where: { email: profile.email },
+            include: {
+              accounts: true,
+            },
+          });
+
+          if (existingUser) {
+            // Check if the existing user has accounts from different providers
+            const hasOtherProviders = existingUser.accounts.some(
+              (existingAccount) => existingAccount.provider !== account.provider
+            );
+
+            if (hasOtherProviders) {
+              // Prevent sign-in and show error
+              console.log(
+                `Account linking prevented for ${profile.email}. User already has accounts with different providers.`
+              );
+              return false;
+            }
+          }
+        } catch (error) {
+          console.error("Error checking existing accounts:", error);
+          return false;
+        }
+      }
+
+      return true;
+    },
     async jwt({ token, user, account }) {
       // Persist user id and other info to JWT token
       if (user) {
@@ -113,13 +156,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.image = token.image as string;
       }
       return session;
-    },
-    async signIn({ user, account, profile, email, credentials }) {
-      // If using credentials provider and user is null, redirect to register
-      if (account?.provider === "credentials" && !user) {
-        return false;
-      }
-      return true;
     },
     async redirect({ url, baseUrl }) {
       // Allows relative callback URLs
