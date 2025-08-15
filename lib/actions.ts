@@ -5,6 +5,8 @@ import { prisma } from "@/prisma";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
+import crypto from "crypto";
+import { sendPasswordResetEmail } from "@/lib/email";
 
 export async function signInWithGithub() {
   await signIn("github", {
@@ -90,6 +92,107 @@ export async function registerWithCredentials(formData: FormData) {
     password,
     redirectTo: "/",
   });
+}
+
+// reset password
+export async function requestPasswordReset(email: string) {
+  console.log("Requesting password reset for email:", email);
+  try {
+    // Check if user exists
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      // Don't reveal if email exists or not for security
+      return {
+        success: true,
+        message: "If the email exists, a reset link has been sent.",
+      };
+    }
+
+    // Check if user has a password (OAuth users might not)
+    if (!user.password) {
+      return {
+        success: false,
+        error:
+          "This account was created with a social provider. Please use that provider to sign in.",
+      };
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour from now
+
+    // Delete any existing reset tokens for this email
+    await prisma.passwordResetToken.deleteMany({
+      where: { email },
+    });
+
+    // Create new reset token
+    await prisma.passwordResetToken.create({
+      data: {
+        email,
+        token: resetToken,
+        expires: resetTokenExpiry,
+      },
+    });
+
+    // Send email
+    await sendPasswordResetEmail(email, resetToken);
+
+    return {
+      success: true,
+      message: "If the email exists, a reset link has been sent.",
+    };
+  } catch (error) {
+    console.error("Password reset request error:", error);
+    return {
+      success: false,
+      error: "Something went wrong. Please try again.",
+    };
+  }
+}
+
+export async function resetPassword(token: string, newPassword: string) {
+  try {
+    // Find valid token
+    const resetToken = await prisma.passwordResetToken.findUnique({
+      where: { token },
+    });
+
+    if (!resetToken || resetToken.expires < new Date()) {
+      return {
+        success: false,
+        error: "Invalid or expired reset token.",
+      };
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+    // Update user password
+    await prisma.user.update({
+      where: { email: resetToken.email },
+      data: { password: hashedPassword },
+    });
+
+    // Delete used token
+    await prisma.passwordResetToken.delete({
+      where: { token },
+    });
+
+    return {
+      success: true,
+      message: "Password has been reset successfully.",
+    };
+  } catch (error) {
+    console.error("Password reset error:", error);
+    return {
+      success: false,
+      error: "Something went wrong. Please try again.",
+    };
+  }
 }
 
 export async function fetchBalances() {

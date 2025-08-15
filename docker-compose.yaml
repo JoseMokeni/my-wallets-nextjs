@@ -23,6 +23,9 @@ services:
     depends_on:
       - postgres
       - adminer
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
   postgres:
     image: postgres:latest
     environment:
