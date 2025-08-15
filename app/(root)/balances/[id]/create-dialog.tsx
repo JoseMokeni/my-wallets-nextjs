@@ -32,10 +32,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Balance, Category, Transaction } from "@/lib/generated/prisma";
 import { createTransaction } from "@/lib/actions";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
 
 interface CreateTransactionDialogProps {
   balance: Balance | null;
@@ -53,6 +55,15 @@ const CreateTransactionDialog = ({
   const [selectedCategory, setSelectedCategory] = useState("");
   const [amountError, setAmountError] = useState("");
   const [transactionType, setTransactionType] = useState("income");
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedTime, setSelectedTime] = useState(() => {
+    const now = new Date();
+    return `${now.getHours().toString().padStart(2, "0")}:${now
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}`;
+  });
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -128,6 +139,12 @@ const CreateTransactionDialog = ({
       // Add categoryId to formData
       formData.set("categoryId", selectedCategory);
 
+      // Combine date and time into a single Date object
+      const [hours, minutes] = selectedTime.split(":").map(Number);
+      const combinedDateTime = new Date(selectedDate);
+      combinedDateTime.setHours(hours, minutes);
+      formData.set("date", combinedDateTime.toISOString());
+
       const createdTransaction = await createTransaction(formData);
 
       if (!createdTransaction) {
@@ -140,7 +157,15 @@ const CreateTransactionDialog = ({
       setIsDialogOpen(false);
       setSelectedCategory("");
       setAmountError("");
-      setTransactionType("");
+      setTransactionType("income");
+      setSelectedDate(new Date());
+      const now = new Date();
+      setSelectedTime(
+        `${now.getHours().toString().padStart(2, "0")}:${now
+          .getMinutes()
+          .toString()
+          .padStart(2, "0")}`
+      );
 
       if (event.currentTarget) {
         event.currentTarget.reset();
@@ -158,7 +183,26 @@ const CreateTransactionDialog = ({
   };
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog
+      open={isDialogOpen}
+      onOpenChange={(open) => {
+        setIsDialogOpen(open);
+        if (open) {
+          // Reset form when opening
+          setSelectedCategory("");
+          setAmountError("");
+          setTransactionType("income");
+          setSelectedDate(new Date());
+          const now = new Date();
+          setSelectedTime(
+            `${now.getHours().toString().padStart(2, "0")}:${now
+              .getMinutes()
+              .toString()
+              .padStart(2, "0")}`
+          );
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <Button variant="default" className="mb-4 mt-2">
           Create Transaction
@@ -209,7 +253,7 @@ const CreateTransactionDialog = ({
             <Select
               name="type"
               onValueChange={handleTypeChange}
-              defaultValue="income"
+              value={transactionType}
               required
             >
               <SelectTrigger className="mt-2 w-full">
@@ -276,6 +320,57 @@ const CreateTransactionDialog = ({
                 </Command>
               </PopoverContent>
             </Popover>
+
+            <div className="mt-4">
+              <Label className="text-sm font-medium">Date & Time *</Label>
+              <div className="flex gap-2 mt-2">
+                <div className="flex-1">
+                  <Popover
+                    open={datePickerOpen}
+                    onOpenChange={setDatePickerOpen}
+                  >
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !selectedDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {selectedDate ? (
+                          format(selectedDate, "MMM dd, yyyy")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={selectedDate}
+                        onSelect={(date) => {
+                          if (date) {
+                            setSelectedDate(date);
+                            setDatePickerOpen(false);
+                          }
+                        }}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <div className="w-32">
+                  <Input
+                    type="time"
+                    id="time"
+                    value={selectedTime}
+                    onChange={(e) => setSelectedTime(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
 
             <Label htmlFor="balance" className="mt-4">
               Balance *

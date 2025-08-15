@@ -216,8 +216,6 @@ export async function fetchTransactionsByBalanceId(balanceId: string) {
       },
     });
 
-    console.log("Fetched transactions:", transactions);
-
     return transactions;
   } catch (error) {
     console.error("Error fetching transactions:", error);
@@ -235,12 +233,16 @@ export async function createTransaction(formData: FormData) {
 
     const user = session.user;
 
+    const dateString = formData.get("date") as string;
+    const transactionDate = dateString ? new Date(dateString) : new Date();
+
     const transaction = await prisma.transaction.create({
       data: {
         userId: user.id,
         amount: parseFloat(formData.get("amount") as string),
         type: formData.get("type") as string,
         description: formData.get("description") as string,
+        date: transactionDate,
         categoryId:
           (formData.get("categoryId") as string) === ""
             ? null
