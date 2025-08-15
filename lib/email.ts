@@ -7,7 +7,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
 
   const emailFrom =
     process.env.NODE_ENV === "production"
-      ? "My Wallets <do-not-reply@josemokeni.cloud>"
+      ? `${process.env.RESEND_FROM_NAME} <${process.env.RESEND_FROM_EMAIL}>`
       : "My Wallets <onboarding@resend.dev>";
 
   try {
