@@ -63,7 +63,6 @@ const CreateBalanceDialog = ({
       }
 
       const newBalance = await response.json();
-      console.log("New balance created:", newBalance);
       toast.success("Balance created successfully!");
 
       setIsDialogOpen(false);

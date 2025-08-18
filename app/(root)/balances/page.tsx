@@ -16,7 +16,6 @@ const Page = () => {
     const loadBalances = async () => {
       const fetchedBalances = await fetchBalances();
       setBalances(fetchedBalances);
-      console.log("Fetched balances:", fetchedBalances);
     };
 
     loadBalances();

@@ -8,6 +8,7 @@ function LoginContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { data: session, status } = useSession();
+
   const error = searchParams.get("error");
 
   useEffect(() => {
