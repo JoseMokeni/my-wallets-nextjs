@@ -66,13 +66,22 @@ export default async function AccountPage() {
   };
 
   return (
-    <div className="w-full">
-      <h1 className="text-2xl font-bold mb-4">Account Settings</h1>
-      <p className="text-muted-foreground mb-6">
-        Manage your account information and security settings
-      </p>
+    <div className="w-full space-y-8">
+      {/* Header with gradient background */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand-blue/5 to-brand-purple/5 p-6 border">
+        <div className="relative z-10">
+          <h1 className="text-3xl font-bold text-foreground">
+            Account
+          </h1>
+          <p className="text-muted-foreground mt-2">
+            Manage your account information and security settings
+          </p>
+        </div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-brand-purple/10 to-transparent rounded-full transform translate-x-16 -translate-y-16" />
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-brand-blue/10 to-transparent rounded-full transform -translate-x-12 translate-y-12" />
+      </div>
 
-      <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-8 lg:grid-cols-2">
         {/* Profile Information Card */}
         <Card>
           <CardHeader>
@@ -148,22 +157,33 @@ export default async function AccountPage() {
         </Card>
 
         {/* Security Settings Card */}
-        {hasPassword && !isOAuthUser && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5" />
-                Security Settings
-              </CardTitle>
-              <CardDescription>
-                Manage your password and security preferences
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5" />
+              Security Settings
+            </CardTitle>
+            <CardDescription>
+              Manage your password and security preferences
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {hasPassword && !isOAuthUser ? (
               <ChangePasswordForm />
-            </CardContent>
-          </Card>
-        )}
+            ) : (
+              <div className="text-center py-8">
+                <div className="p-4 rounded-full bg-muted/50 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <Shield className="w-8 h-8 text-muted-foreground" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">OAuth Authentication</h3>
+                <p className="text-muted-foreground text-sm">
+                  Your account is secured through {providers.join(", ")} authentication.
+                  {providers.length === 0 && !hasPassword && " No additional security settings available."}
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

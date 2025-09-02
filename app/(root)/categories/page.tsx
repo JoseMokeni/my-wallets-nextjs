@@ -62,24 +62,30 @@ const Page = () => {
   }
 
   return (
-    <div className="w-full space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-brand-teal to-brand-purple bg-clip-text text-transparent">
-            Categories
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Organize your transactions with custom categories
-          </p>
+    <div className="w-full space-y-8">
+      {/* Header with gradient background */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand-blue/5 to-brand-purple/5 p-6 border">
+        <div className="relative z-10">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">
+                Categories
+              </h1>
+              <p className="text-muted-foreground mt-2">
+                Organize your transactions with custom categories
+              </p>
+            </div>
+            <CreateCategoryDialog onCategoryCreated={handleCreateCategory} />
+          </div>
         </div>
-        <CreateCategoryDialog onCategoryCreated={handleCreateCategory} />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-brand-purple/10 to-transparent rounded-full transform translate-x-16 -translate-y-16" />
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-brand-blue/10 to-transparent rounded-full transform -translate-x-12 translate-y-12" />
       </div>
       
       {categories.length === 0 ? (
-        <div className="text-center py-12 rounded-xl border bg-gradient-to-br from-brand-teal/5 to-brand-purple/5">
-          <div className="p-4 rounded-full bg-brand-teal/10 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-            <svg className="w-8 h-8 text-brand-teal" fill="currentColor" viewBox="0 0 24 24">
+        <div className="text-center py-12 rounded-xl border bg-gradient-to-br from-surface-1 to-surface-2">
+          <div className="p-4 rounded-full bg-brand-blue/10 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+            <svg className="w-8 h-8 text-brand-blue" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
             </svg>
           </div>
