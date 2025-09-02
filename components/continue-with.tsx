@@ -25,14 +25,21 @@ const ContinueWith = () => {
           <span className="sr-only">Register with Apple</span>
         </Button>
       </form> */}
-      <form action={() => {
-        setLoadingProvider("google");
-        startTransition(async () => {
-          await signInWithGoogle();
-          setLoadingProvider(null);
-        });
-      }}>
-        <Button variant="outline" type="submit" className="w-full" disabled={loadingProvider === "google" || isPending}>
+      <form
+        action={() => {
+          setLoadingProvider("google");
+          startTransition(async () => {
+            await signInWithGoogle();
+            setLoadingProvider(null);
+          });
+        }}
+      >
+        <Button
+          variant="outline"
+          type="submit"
+          className="w-full"
+          disabled={loadingProvider === "google" || isPending}
+        >
           {loadingProvider === "google" ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
@@ -43,16 +50,18 @@ const ContinueWith = () => {
               />
             </svg>
           )}
-          <span className="sr-only">Register with Google</span>
+          <span>Google</span>
         </Button>
       </form>
-      <form action={() => {
-        setLoadingProvider("github");
-        startTransition(async () => {
-          await signInWithGithub();
-          setLoadingProvider(null);
-        });
-      }}>
+      <form
+        action={() => {
+          setLoadingProvider("github");
+          startTransition(async () => {
+            await signInWithGithub();
+            setLoadingProvider(null);
+          });
+        }}
+      >
         <Button
           variant="outline"
           type="submit"
