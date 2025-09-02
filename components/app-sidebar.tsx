@@ -35,7 +35,7 @@ import { signOutUser } from "@/lib/actions";
 const items: { title: string; url: string; icon: React.ComponentType }[] = [
   {
     title: "Dashboard",
-    url: "/",
+    url: "/dashboard",
     icon: ChartAreaIcon,
   },
   {

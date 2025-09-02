@@ -6,8 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { useState, useEffect, useTransition } from "react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import {
   signInWithGithub,
   signInWithGoogle,
@@ -26,6 +26,7 @@ export function RegisterForm({
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     setMounted(true);
@@ -62,7 +63,11 @@ export function RegisterForm({
               </Alert>
             )}
             <form
-              action={registerWithCredentials}
+              action={(formData) => {
+                startTransition(async () => {
+                  await registerWithCredentials(formData);
+                });
+              }}
               className="flex flex-col gap-6"
             >
               <div className="flex flex-col items-center text-center">
@@ -149,8 +154,12 @@ export function RegisterForm({
                   </Button>
                 </div>
               </div>
-              <Button type="submit" className="w-full">
-                Register
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  "Register"
+                )}
               </Button>
             </form>
             <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t mt-6">

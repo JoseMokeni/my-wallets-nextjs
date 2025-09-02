@@ -14,7 +14,7 @@ function LoginContent() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/");
+      router.push("/dashboard");
     }
   }, [status, router]);
 

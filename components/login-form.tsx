@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import {
   signInWithGithub,
   signInWithGoogle,
@@ -15,7 +15,7 @@ import {
 } from "@/lib/actions";
 import ContinueWith from "./continue-with";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 
 export function LoginForm({
   className,
@@ -23,6 +23,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div"> & { error?: string | null }) {
   const [mounted, setMounted] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     setMounted(true);
@@ -65,7 +66,11 @@ export function LoginForm({
               </Alert>
             )}
             <form
-              action={signInWithCredentials}
+              action={(formData) => {
+                startTransition(async () => {
+                  await signInWithCredentials(formData);
+                });
+              }}
               className="flex flex-col gap-6"
             >
               <div className="flex flex-col items-center text-center">
@@ -96,8 +101,12 @@ export function LoginForm({
                 </div>
                 <Input id="password" name="password" type="password" required />
               </div>
-              <Button type="submit" className="w-full">
-                Login
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  "Login"
+                )}
               </Button>
             </form>
             <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t mt-6">

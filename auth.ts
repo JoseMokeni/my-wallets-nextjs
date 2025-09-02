@@ -82,7 +82,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       // If logged in and on auth page, redirect to home
       if (isLoggedIn && isOnAuthPage) {
-        return Response.redirect(new URL("/", nextUrl));
+        return Response.redirect(new URL("/dashboard", nextUrl));
       }
 
       // Allow access to auth pages when not logged in

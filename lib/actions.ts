@@ -10,13 +10,13 @@ import { sendPasswordResetEmail } from "@/lib/email";
 
 export async function signInWithGithub() {
   await signIn("github", {
-    redirectTo: "/",
+    redirectTo: "/dashboard",
   });
 }
 
 export async function signInWithGoogle() {
   await signIn("google", {
-    redirectTo: "/",
+    redirectTo: "/dashboard",
   });
 }
 
@@ -32,7 +32,7 @@ export async function signInWithCredentials(formData: FormData) {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: "/",
+      redirectTo: "/dashboard",
     });
   } catch (error) {
     if (error instanceof AuthError) {
@@ -90,7 +90,7 @@ export async function registerWithCredentials(formData: FormData) {
   await signIn("credentials", {
     email,
     password,
-    redirectTo: "/",
+    redirectTo: "/dashboard",
   });
 }
 
