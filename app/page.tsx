@@ -1,30 +1,31 @@
 import { auth } from "@/auth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { 
-  Wallet, 
-  BarChart3, 
-  Shield, 
-  Smartphone, 
-  TrendingUp, 
+import {
+  Wallet,
+  BarChart3,
+  Shield,
+  Smartphone,
+  TrendingUp,
   Users,
-  ChevronRight
+  ChevronRight,
 } from "lucide-react";
 import { Metadata } from "next";
 import { ModeToggle } from "@/components/theme-mode-toggle";
 
 export const metadata: Metadata = {
   title: "My Wallets - Personal Finance Management Made Simple",
-  description: "Track your expenses, manage multiple wallets, and gain insights into your spending habits with our intuitive financial management platform. Start managing your finances like a pro today.",
+  description:
+    "Track your expenses, manage multiple wallets, and gain insights into your spending habits with our intuitive financial management platform. Start managing your finances like a pro today.",
   keywords: [
     "personal finance",
-    "expense tracking", 
+    "expense tracking",
     "wallet management",
     "financial analytics",
     "budget tracker",
     "money management",
     "spending insights",
-    "financial planning"
+    "financial planning",
   ],
   authors: [{ name: "My Wallets Team" }],
   creator: "My Wallets",
@@ -35,9 +36,9 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   openGraph: {
@@ -46,7 +47,8 @@ export const metadata: Metadata = {
     url: "https://mywallets.app",
     siteName: "My Wallets",
     title: "My Wallets - Personal Finance Management Made Simple",
-    description: "Track your expenses, manage multiple wallets, and gain insights into your spending habits with our intuitive financial management platform.",
+    description:
+      "Track your expenses, manage multiple wallets, and gain insights into your spending habits with our intuitive financial management platform.",
     images: [
       {
         url: "/og-image.png",
@@ -59,7 +61,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "My Wallets - Personal Finance Management Made Simple",
-    description: "Track your expenses, manage multiple wallets, and gain insights into your spending habits with our intuitive financial management platform.",
+    description:
+      "Track your expenses, manage multiple wallets, and gain insights into your spending habits with our intuitive financial management platform.",
     creator: "@mywallets",
     images: ["/og-image.png"],
   },
@@ -86,33 +89,34 @@ export default async function LandingPage() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "My Wallets",
-    "description": "Personal finance management platform for tracking expenses, managing multiple wallets, and gaining insights into spending habits.",
-    "url": "https://mywallets.app",
-    "applicationCategory": "FinanceApplication",
-    "operatingSystem": "Web, iOS, Android",
-    "offers": {
+    name: "My Wallets",
+    description:
+      "Personal finance management platform for tracking expenses, managing multiple wallets, and gaining insights into spending habits.",
+    url: "https://mywallets.app",
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Web, iOS, Android",
+    offers: {
       "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD",
-      "description": "Free personal finance management"
+      price: "0",
+      priceCurrency: "USD",
+      description: "Free personal finance management",
     },
-    "featureList": [
+    featureList: [
       "Multiple Wallets Management",
       "Smart Analytics",
-      "Expense Tracking", 
+      "Expense Tracking",
       "Bank-Level Security",
       "Mobile Friendly",
-      "Easy Sharing"
+      "Easy Sharing",
     ],
-    "publisher": {
+    publisher: {
       "@type": "Organization",
-      "name": "My Wallets",
-      "logo": {
+      name: "My Wallets",
+      logo: {
         "@type": "ImageObject",
-        "url": "https://mywallets.app/logo.png"
-      }
-    }
+        url: "https://mywallets.app/logo.png",
+      },
+    },
   };
 
   return (
@@ -165,8 +169,9 @@ export default async function LandingPage() {
                 <span className="text-foreground">Like a Pro</span>
               </h1>
               <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-                Track your expenses, manage multiple wallets, and gain insights into your spending habits 
-                with our intuitive and powerful financial management platform.
+                Track your expenses, manage multiple wallets, and gain insights
+                into your spending habits with our intuitive and powerful
+                financial management platform.
               </p>
               <div className="mt-10 flex justify-center">
                 <Button size="lg" className="h-12 px-8" asChild>
@@ -177,7 +182,7 @@ export default async function LandingPage() {
                 </Button>
               </div>
             </div>
-            
+
             {/* Decorative elements */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-brand-blue/20 to-brand-purple/20 rounded-full blur-3xl opacity-30" />
             <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-gradient-to-tl from-brand-teal/20 to-brand-orange/20 rounded-full blur-3xl opacity-20" />
@@ -193,7 +198,8 @@ export default async function LandingPage() {
               Everything you need to manage your money
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Powerful features designed to make financial management simple, secure, and insightful.
+              Powerful features designed to make financial management simple,
+              secure, and insightful.
             </p>
           </div>
 
@@ -204,8 +210,8 @@ export default async function LandingPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Multiple Wallets</h3>
               <p className="text-muted-foreground">
-                Organize your finances with multiple wallets for different purposes. 
-                Track spending across various accounts effortlessly.
+                Organize your finances with multiple wallets for different
+                purposes. Track spending across various accounts effortlessly.
               </p>
             </div>
 
@@ -215,8 +221,8 @@ export default async function LandingPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Smart Analytics</h3>
               <p className="text-muted-foreground">
-                Get detailed insights into your spending patterns with beautiful charts 
-                and comprehensive financial analytics.
+                Get detailed insights into your spending patterns with beautiful
+                charts and comprehensive financial analytics.
               </p>
             </div>
 
@@ -226,8 +232,8 @@ export default async function LandingPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Expense Tracking</h3>
               <p className="text-muted-foreground">
-                Categorize and track your expenses automatically. 
-                See where your money goes and make informed financial decisions.
+                Categorize and track your expenses automatically. See where your
+                money goes and make informed financial decisions.
               </p>
             </div>
 
@@ -235,9 +241,11 @@ export default async function LandingPage() {
               <div className="w-12 h-12 bg-brand-orange/10 rounded-lg flex items-center justify-center mb-4">
                 <Shield className="h-6 w-6 text-brand-orange" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Bank-Level Security</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Bank-Level Security
+              </h3>
               <p className="text-muted-foreground">
-                Your financial data is protected with enterprise-grade security 
+                Your financial data is protected with enterprise-grade security
                 and encryption. Your privacy is our priority.
               </p>
             </div>
@@ -248,8 +256,8 @@ export default async function LandingPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Mobile Friendly</h3>
               <p className="text-muted-foreground">
-                Access your financial data anywhere, anytime. 
-                Fully responsive design that works on all your devices.
+                Access your financial data anywhere, anytime. Fully responsive
+                design that works on all your devices.
               </p>
             </div>
 
@@ -259,8 +267,8 @@ export default async function LandingPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Easy Sharing</h3>
               <p className="text-muted-foreground">
-                Share expenses with family and friends. 
-                Collaborate on budgets and keep everyone on the same page.
+                Share expenses with family and friends. Collaborate on budgets
+                and keep everyone on the same page.
               </p>
             </div>
           </div>
@@ -276,10 +284,16 @@ export default async function LandingPage() {
                 Ready to take control of your finances?
               </h2>
               <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-                Join thousands of users who have already transformed their financial management. 
-                Start your journey today - it's completely free!
+                Join thousands of users who have already transformed their
+                financial management. Start your journey today - it's completely
+                free!
               </p>
-              <Button size="lg" variant="secondary" className="h-12 px-8" asChild>
+              <Button
+                size="lg"
+                variant="secondary"
+                className="h-12 px-8"
+                asChild
+              >
                 <Link href="/register">
                   Get Started Now
                   <ChevronRight className="ml-2 h-4 w-4" />
@@ -301,7 +315,8 @@ export default async function LandingPage() {
               <span className="ml-2 font-semibold">My Wallets</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              © 2024 My Wallets. Built with ❤️ for better financial management.
+              © 2025 My Wallets. Built by José Mokeni for better financial
+              management.
             </p>
           </div>
         </div>
