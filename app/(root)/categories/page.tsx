@@ -7,6 +7,7 @@ import { columns } from "./columns";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import CreateCategoryDialog from "./dialog";
+import { PageHeaderSkeleton, DataTableSkeleton } from "@/components/ui/skeleton-cards";
 
 const Page = () => {
   const { data: session, status } = useSession();
@@ -54,7 +55,12 @@ const Page = () => {
   };
 
   if (status === "loading" || loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full space-y-8">
+        <PageHeaderSkeleton />
+        <DataTableSkeleton />
+      </div>
+    );
   }
 
   if (error) {

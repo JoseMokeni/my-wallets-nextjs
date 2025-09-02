@@ -4,9 +4,11 @@ import CreateBalanceDialog from "./dialog";
 import { fetchBalances } from "@/lib/actions";
 import { Balance } from "@/lib/generated/prisma";
 import BalancesList from "./list";
+import { PageHeaderSkeleton, BalancesGridSkeleton } from "@/components/ui/skeleton-cards";
 
 const Page = () => {
   const [balances, setBalances] = useState<Balance[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const handleBalanceCreated = (balance: Balance) => {
     setBalances((prev) => [balance, ...prev]);
@@ -14,12 +16,26 @@ const Page = () => {
 
   useEffect(() => {
     const loadBalances = async () => {
-      const fetchedBalances = await fetchBalances();
-      setBalances(fetchedBalances);
+      try {
+        setLoading(true);
+        const fetchedBalances = await fetchBalances();
+        setBalances(fetchedBalances);
+      } finally {
+        setLoading(false);
+      }
     };
 
     loadBalances();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="w-full space-y-8">
+        <PageHeaderSkeleton />
+        <BalancesGridSkeleton />
+      </div>
+    );
+  }
   return (
     <div className="w-full space-y-8">
       {/* Header with gradient background */}
