@@ -36,10 +36,13 @@ export const AccountBalances: React.FC<AccountBalancesProps> = ({
 };
 
 const EmptyBalances: React.FC = () => (
-  <div className="text-center py-4">
+  <div className="text-center py-8">
+    <div className="p-4 rounded-full bg-brand-blue/10 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+      <Wallet className="w-8 h-8 text-brand-blue" />
+    </div>
     <p className="text-muted-foreground mb-4">No balances yet</p>
     <Link href="/balances">
-      <Button>
+      <Button variant="brand-blue">
         <Plus className="w-4 h-4 mr-2" />
         Create First Balance
       </Button>
@@ -77,28 +80,39 @@ interface BalanceItemProps {
   balance: Balance;
 }
 
-const BalanceItem: React.FC<BalanceItemProps> = ({ balance }) => (
-  <Link href={`/balances/${balance.id}`}>
-    <div className="flex mb-2 items-center justify-between p-3 rounded-lg border hover:bg-muted/50 transition-colors">
-      <div className="flex items-center space-x-3">
-        <div className="p-2 bg-primary/10 rounded-full">
-          <Wallet className="w-4 h-4 text-primary" />
+const BalanceItem: React.FC<BalanceItemProps> = ({ balance }) => {
+  const gradients = [
+    "bg-gradient-to-r from-brand-blue/10 to-brand-purple/10",
+    "bg-gradient-to-r from-brand-teal/10 to-brand-blue/10", 
+    "bg-gradient-to-r from-brand-orange/10 to-brand-pink/10",
+    "bg-gradient-to-r from-brand-purple/10 to-brand-pink/10"
+  ];
+  const colors = ["text-brand-blue", "text-brand-teal", "text-brand-orange", "text-brand-purple"];
+  const colorIndex = balance.id.charCodeAt(0) % 4;
+  
+  return (
+    <Link href={`/balances/${balance.id}`}>
+      <div className={`flex mb-2 items-center justify-between p-4 rounded-lg border hover:shadow-md transition-all duration-200 ${gradients[colorIndex]}`}>
+        <div className="flex items-center space-x-3">
+          <div className={`p-2 rounded-full bg-background/50 ${colors[colorIndex]}`}>
+            <Wallet className="w-4 h-4" />
+          </div>
+          <div>
+            <p className="font-medium text-sm">{balance.name}</p>
+            <p className="text-xs text-muted-foreground">
+              {balance.currency} Account
+            </p>
+          </div>
         </div>
-        <div>
-          <p className="font-medium text-sm">{balance.name}</p>
-          <p className="text-xs text-muted-foreground">
-            {balance.currency} Account
+        <div className="text-right">
+          <p className="font-semibold">
+            {balance.amount.toLocaleString("en-US", {
+              style: "currency",
+              currency: balance.currency,
+            })}
           </p>
         </div>
       </div>
-      <div className="text-right">
-        <p className="font-semibold">
-          {balance.amount.toLocaleString("en-US", {
-            style: "currency",
-            currency: balance.currency,
-          })}
-        </p>
-      </div>
-    </div>
-  </Link>
-);
+    </Link>
+  );
+};

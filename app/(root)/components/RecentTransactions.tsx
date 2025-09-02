@@ -53,13 +53,13 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
       <div className="flex items-center space-x-3">
         <div
           className={`p-2 rounded-full ${
-            isIncome ? "bg-green-100" : "bg-red-100"
+            isIncome ? "bg-income-bg" : "bg-expense-bg"
           }`}
         >
           {isIncome ? (
-            <ArrowUpRight className="w-4 h-4 text-green-600" />
+            <ArrowUpRight className="w-4 h-4 text-income" />
           ) : (
-            <ArrowDownRight className="w-4 h-4 text-red-600" />
+            <ArrowDownRight className="w-4 h-4 text-expense" />
           )}
         </div>
         <div>
@@ -75,7 +75,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
       <div className="text-right">
         <p
           className={`font-medium ${
-            isIncome ? "text-green-600" : "text-red-600"
+            isIncome ? "text-income" : "text-expense"
           }`}
         >
           {isIncome ? "+" : "-"}

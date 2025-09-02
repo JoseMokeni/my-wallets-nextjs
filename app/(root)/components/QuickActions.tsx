@@ -10,16 +10,19 @@ export const QuickActions: React.FC = () => {
       href: "/balances",
       icon: Wallet,
       label: "Manage Balances",
+      variant: "brand-blue" as const,
     },
     {
       href: "/categories",
       icon: Activity,
       label: "Manage Categories",
+      variant: "brand-teal" as const,
     },
     {
       href: "/balances",
       icon: Plus,
       label: "Add Transaction",
+      variant: "brand-purple" as const,
     },
   ];
 
@@ -32,8 +35,8 @@ export const QuickActions: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {actions.map((action, index) => (
             <Link key={index} href={action.href}>
-              <Button variant="outline" className="w-full justify-start">
-                <action.icon className="w-4 h-4 mr-2" />
+              <Button variant={action.variant} className="w-full justify-start h-12">
+                <action.icon className="w-5 h-5 mr-3" />
                 {action.label}
               </Button>
             </Link>

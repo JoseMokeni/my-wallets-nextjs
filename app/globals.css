@@ -37,6 +37,37 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  
+  /* Enhanced Color Palette for Tailwind */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-income: var(--income);
+  --color-income-foreground: var(--income-foreground);
+  --color-income-bg: var(--income-bg);
+  --color-expense: var(--expense);
+  --color-expense-foreground: var(--expense-foreground);
+  --color-expense-bg: var(--expense-bg);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-foreground: var(--brand-blue-foreground);
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-purple-foreground: var(--brand-purple-foreground);
+  --color-brand-teal: var(--brand-teal);
+  --color-brand-teal-foreground: var(--brand-teal-foreground);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-orange-foreground: var(--brand-orange-foreground);
+  --color-brand-pink: var(--brand-pink);
+  --color-brand-pink-foreground: var(--brand-pink-foreground);
+  --color-hover: var(--hover);
+  --color-active: var(--active);
+  --color-focus: var(--focus);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -76,6 +107,52 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Enhanced Color Palette */
+  --success: oklch(0.65 0.15 142.5);
+  --success-foreground: oklch(0.98 0 0);
+  --warning: oklch(0.75 0.15 65);
+  --warning-foreground: oklch(0.98 0 0);
+  --info: oklch(0.6 0.15 240);
+  --info-foreground: oklch(0.98 0 0);
+  
+  /* Income/Expense colors */
+  --income: oklch(0.65 0.15 142.5);
+  --income-foreground: oklch(0.2 0.1 142.5);
+  --income-bg: oklch(0.95 0.05 142.5);
+  --expense: oklch(0.6 0.15 15);
+  --expense-foreground: oklch(0.2 0.1 15);
+  --expense-bg: oklch(0.95 0.05 15);
+  
+  /* Brand colors */
+  --brand-blue: oklch(0.55 0.18 240);
+  --brand-blue-foreground: oklch(0.98 0 0);
+  --brand-purple: oklch(0.55 0.18 280);
+  --brand-purple-foreground: oklch(0.98 0 0);
+  --brand-teal: oklch(0.6 0.15 180);
+  --brand-teal-foreground: oklch(0.98 0 0);
+  --brand-orange: oklch(0.65 0.15 45);
+  --brand-orange-foreground: oklch(0.98 0 0);
+  --brand-pink: oklch(0.65 0.15 340);
+  --brand-pink-foreground: oklch(0.98 0 0);
+  
+  /* Interactive states */
+  --hover: oklch(0.95 0.02 240);
+  --active: oklch(0.9 0.05 240);
+  --focus: oklch(0.6 0.15 240);
+  
+  /* Enhanced chart colors */
+  --chart-gradient-1: oklch(0.7 0.2 280);
+  --chart-gradient-2: oklch(0.65 0.18 240);
+  --chart-gradient-3: oklch(0.6 0.15 200);
+  --chart-gradient-4: oklch(0.65 0.15 160);
+  --chart-gradient-5: oklch(0.7 0.18 120);
+  --chart-gradient-6: oklch(0.75 0.15 80);
+  
+  /* Surface variations */
+  --surface-1: oklch(0.98 0.01 240);
+  --surface-2: oklch(0.95 0.02 240);
+  --surface-3: oklch(0.92 0.03 240);
 }
 
 .dark {
@@ -110,6 +187,52 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Enhanced Color Palette - Dark Mode */
+  --success: oklch(0.7 0.15 142.5);
+  --success-foreground: oklch(0.1 0 0);
+  --warning: oklch(0.8 0.15 65);
+  --warning-foreground: oklch(0.1 0 0);
+  --info: oklch(0.7 0.15 240);
+  --info-foreground: oklch(0.1 0 0);
+  
+  /* Income/Expense colors - Dark Mode */
+  --income: oklch(0.7 0.15 142.5);
+  --income-foreground: oklch(0.9 0.1 142.5);
+  --income-bg: oklch(0.25 0.05 142.5);
+  --expense: oklch(0.65 0.15 15);
+  --expense-foreground: oklch(0.9 0.1 15);
+  --expense-bg: oklch(0.25 0.05 15);
+  
+  /* Brand colors - Dark Mode */
+  --brand-blue: oklch(0.65 0.18 240);
+  --brand-blue-foreground: oklch(0.1 0 0);
+  --brand-purple: oklch(0.65 0.18 280);
+  --brand-purple-foreground: oklch(0.1 0 0);
+  --brand-teal: oklch(0.7 0.15 180);
+  --brand-teal-foreground: oklch(0.1 0 0);
+  --brand-orange: oklch(0.75 0.15 45);
+  --brand-orange-foreground: oklch(0.1 0 0);
+  --brand-pink: oklch(0.75 0.15 340);
+  --brand-pink-foreground: oklch(0.1 0 0);
+  
+  /* Interactive states - Dark Mode */
+  --hover: oklch(0.3 0.02 240);
+  --active: oklch(0.35 0.05 240);
+  --focus: oklch(0.7 0.15 240);
+  
+  /* Enhanced chart colors - Dark Mode */
+  --chart-gradient-1: oklch(0.6 0.2 280);
+  --chart-gradient-2: oklch(0.65 0.18 240);
+  --chart-gradient-3: oklch(0.7 0.15 200);
+  --chart-gradient-4: oklch(0.65 0.15 160);
+  --chart-gradient-5: oklch(0.6 0.18 120);
+  --chart-gradient-6: oklch(0.65 0.15 80);
+  
+  /* Surface variations - Dark Mode */
+  --surface-1: oklch(0.2 0.01 240);
+  --surface-2: oklch(0.25 0.02 240);
+  --surface-3: oklch(0.3 0.03 240);
 }
 
 @layer base {
@@ -118,6 +241,69 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Custom gradient text utilities */
+  .gradient-text-blue-purple {
+    @apply bg-gradient-to-r from-brand-blue to-brand-purple bg-clip-text text-transparent;
+  }
+  
+  .gradient-text-teal-blue {
+    @apply bg-gradient-to-r from-brand-teal to-brand-blue bg-clip-text text-transparent;
+  }
+  
+  .gradient-text-orange-pink {
+    @apply bg-gradient-to-r from-brand-orange to-brand-pink bg-clip-text text-transparent;
+  }
+  
+  .gradient-text-purple-pink {
+    @apply bg-gradient-to-r from-brand-purple to-brand-pink bg-clip-text text-transparent;
+  }
+  
+  /* Custom card hover effects */
+  .card-hover {
+    @apply hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ease-out;
+  }
+  
+  /* Animated gradient backgrounds */
+  .animated-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+  
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  /* Glass morphism effect */
+  .glass {
+    @apply backdrop-blur-md bg-background/80 border border-white/20;
+  }
+  
+  /* Shimmer loading effect */
+  .shimmer {
+    background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.1) 50%, transparent 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
   }
 }
 
