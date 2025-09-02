@@ -93,16 +93,14 @@ const Page = () => {
           <p className="text-muted-foreground">Create your first category to organize your transactions.</p>
         </div>
       ) : (
-        <div className="rounded-xl border bg-card/50 backdrop-blur-sm">
-          <DataTable
-            columns={columns}
-            data={categories}
-            hideColumnsOnMobile={["createdAt"]}
-            meta={{
-              handleCategoryDelete,
-            }}
-          />
-        </div>
+        <DataTable
+          columns={columns}
+          data={categories}
+          hideColumnsOnMobile={["createdAt"]}
+          meta={{
+            handleCategoryDelete,
+          }}
+        />
       )}
     </div>
   );
