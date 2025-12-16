@@ -1,41 +1,14 @@
 services:
-  # app-prod:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     - NODE_ENV=production
-  #   depends_on:
-  #     - postgres
-  #     - adminer
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    volumes:
-      - .:/app
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=development
-    depends_on:
-      - postgres
-      - adminer
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
   postgres:
-    image: postgres:latest
+    image: postgres:18
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: expense_tracker
+      POSTGRES_DB: mywallets
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql
   adminer:
     image: adminer:latest
     ports:
