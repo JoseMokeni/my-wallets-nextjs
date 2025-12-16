@@ -22,11 +22,9 @@ const Page = () => {
       {/* Header with gradient background */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand-blue/5 to-brand-purple/5 p-6 border">
         <div className="relative z-10">
-          <h1 className="text-3xl font-bold text-foreground">
-            Overview
-          </h1>
+          <h1 className="text-3xl font-bold text-foreground">Overview</h1>
           <p className="text-muted-foreground mt-2">
-            Welcome back! Here's your financial overview.
+            Welcome back! Here&apos;s your financial overview.
           </p>
         </div>
         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-brand-purple/10 to-transparent rounded-full transform translate-x-16 -translate-y-16" />

@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       },
     });
 
-    const newTransaction = await prisma.transaction.create({
+    await prisma.transaction.create({
       data: {
         userId: userId as string,
         amount,

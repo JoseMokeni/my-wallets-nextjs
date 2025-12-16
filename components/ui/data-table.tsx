@@ -23,7 +23,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   hideColumnsOnMobile?: string[]; // Add optional prop for columns to hide on mobile
-  meta?: any;
+  meta?: Record<string, unknown>;
 }
 
 export function DataTable<TData, TValue>({

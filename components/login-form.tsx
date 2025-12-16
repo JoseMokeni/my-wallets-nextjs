@@ -2,17 +2,13 @@
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useState, useEffect, useTransition } from "react";
-import {
-  signInWithGithub,
-  signInWithGoogle,
-  signInWithApple,
-  signInWithCredentials,
-} from "@/lib/actions";
+import { signInWithCredentials } from "@/lib/actions";
 import ContinueWith from "./continue-with";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
@@ -123,10 +119,11 @@ export function LoginForm({
             </div>
           </div>
           <div className="bg-muted relative hidden md:block">
-            <img
+            <Image
               src="/wallets-auth.png"
               alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              fill
+              className="object-cover dark:brightness-[0.2] dark:grayscale"
             />
           </div>
         </CardContent>

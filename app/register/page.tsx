@@ -8,7 +8,7 @@ import { AuthPageLoading } from "@/components/ui/page-loading";
 function RegisterContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const error = searchParams.get("error");
 
   useEffect(() => {

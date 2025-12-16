@@ -1,11 +1,7 @@
 "use client";
 import React, { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  signInWithApple,
-  signInWithGithub,
-  signInWithGoogle,
-} from "@/lib/actions";
+import { signInWithGithub, signInWithGoogle } from "@/lib/actions";
 import { Loader2 } from "lucide-react";
 
 const ContinueWith = () => {

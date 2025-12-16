@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const iconMap = {
@@ -77,8 +76,7 @@ export const columns: ColumnDef<Category>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row, table }) => {
-      const router = useRouter();
+    cell: function ActionsCell({ row, table }) {
       const [isDeleting, setIsDeleting] = useState(false);
 
       const handleDelete = async (id: string) => {

@@ -78,9 +78,16 @@ export async function registerWithCredentials(formData: FormData) {
     if (!user) {
       redirect("/register?error=RegistrationFailed");
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Handle Prisma unique constraint violation for email
-    if (error.code === "P2002" && error.meta?.target?.includes("email")) {
+    const prismaError = error as {
+      code?: string;
+      meta?: { target?: string[] };
+    };
+    if (
+      prismaError.code === "P2002" &&
+      prismaError.meta?.target?.includes("email")
+    ) {
       redirect("/register?error=EmailAlreadyExists");
     }
 

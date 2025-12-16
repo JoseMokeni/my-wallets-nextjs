@@ -285,8 +285,8 @@ export default async function LandingPage() {
               </h2>
               <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
                 Join thousands of users who have already transformed their
-                financial management. Start your journey today - it's completely
-                free!
+                financial management. Start your journey today - it&apos;s
+                completely free!
               </p>
               <Button
                 size="lg"

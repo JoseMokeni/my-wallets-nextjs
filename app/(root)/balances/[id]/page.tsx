@@ -1,7 +1,7 @@
 "use client";
 import { DataTable } from "@/components/ui/data-table";
 import { Balance, Transaction } from "@/lib/generated/prisma";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { columns } from "./columns";
 import { fetchTransactionsByBalanceId, fetchBalanceById } from "@/lib/actions";
@@ -19,15 +19,15 @@ const Page = () => {
 
   const { id } = useParams();
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     const data = await fetchTransactionsByBalanceId(id as string);
     setTransactions(data);
-  };
+  }, [id]);
 
-  const getBalance = async () => {
+  const getBalance = useCallback(async () => {
     const data = await fetchBalanceById(id as string);
     setBalance(data);
-  };
+  }, [id]);
 
   const handleTransactionCreated = (transaction: Transaction) => {
     setTransactions((prev) => [transaction, ...prev]);
@@ -56,7 +56,7 @@ const Page = () => {
   useEffect(() => {
     getData();
     getBalance();
-  }, [id]);
+  }, [id, getData, getBalance]);
 
   return (
     <div className="w-full">
@@ -67,7 +67,7 @@ const Page = () => {
           </h1>
           {balance ? (
             <p className="text-lg text-muted-foreground">
-              Current Balance: {" "}
+              Current Balance:{" "}
               <span className="font-semibold text-foreground">
                 {balance.amount.toLocaleString("en-US", {
                   style: "currency",
@@ -88,22 +88,32 @@ const Page = () => {
           <TabsTrigger value="insights">Insights</TabsTrigger>
           <TabsTrigger value="transactions">Transactions</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="insights" className="space-y-6">
           {transactions.length > 0 ? (
             <>
-              <InsightsCards analytics={analytics} currency={balance?.currency || "USD"} />
+              <InsightsCards
+                analytics={analytics}
+                currency={balance?.currency || "USD"}
+              />
               <SmartInsights analytics={analytics} />
-              <InsightsCharts analytics={analytics} currency={balance?.currency || "USD"} />
+              <InsightsCharts
+                analytics={analytics}
+                currency={balance?.currency || "USD"}
+              />
             </>
           ) : (
             <div className="text-center py-12">
-              <p className="text-muted-foreground text-lg">No transactions yet</p>
-              <p className="text-muted-foreground">Add some transactions to see insights and analytics</p>
+              <p className="text-muted-foreground text-lg">
+                No transactions yet
+              </p>
+              <p className="text-muted-foreground">
+                Add some transactions to see insights and analytics
+              </p>
             </div>
           )}
         </TabsContent>
-        
+
         <TabsContent value="transactions" className="space-y-4">
           <div className="flex items-center gap-4">
             <label htmlFor="type-filter" className="text-sm font-medium">

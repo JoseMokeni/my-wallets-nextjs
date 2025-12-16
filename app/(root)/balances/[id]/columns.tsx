@@ -36,27 +36,6 @@ const iconMap = {
   ShoppingBag,
 };
 
-const ActionsCell = ({ row }: { row: any }) => {
-  const [detailsOpen, setDetailsOpen] = useState(false);
-  const transaction = row.original as Transaction & {
-    category: Category;
-    balance: { currency: string; name: string };
-  };
-
-  return (
-    <>
-      <Button variant="outline" size="sm" onClick={() => setDetailsOpen(true)}>
-        View Details
-      </Button>
-      <TransactionDetailsDialog
-        transaction={transaction}
-        open={detailsOpen}
-        onOpenChange={setDetailsOpen}
-      />
-    </>
-  );
-};
-
 export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "date",
@@ -121,8 +100,31 @@ export const columns: ColumnDef<Transaction>[] = [
     },
   },
   {
-    accessorKey: "actions",
+    id: "actions",
     header: "Actions",
-    cell: ActionsCell,
+    cell: function ActionsCell({ row }) {
+      const [detailsOpen, setDetailsOpen] = useState(false);
+      const transaction = row.original as Transaction & {
+        category: Category;
+        balance: { currency: string; name: string };
+      };
+
+      return (
+        <>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setDetailsOpen(true)}
+          >
+            View Details
+          </Button>
+          <TransactionDetailsDialog
+            transaction={transaction}
+            open={detailsOpen}
+            onOpenChange={setDetailsOpen}
+          />
+        </>
+      );
+    },
   },
 ];
