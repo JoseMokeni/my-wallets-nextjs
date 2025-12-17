@@ -53,8 +53,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modul
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 # Copy the generated Prisma client from lib folder
 COPY --from=builder --chown=nextjs:nodejs /app/lib ./lib
-# Copy the prisma.config.ts file
-COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./prisma.config.ts
 
 # Copy the standalone build
 COPY --from=builder /app/public ./public
