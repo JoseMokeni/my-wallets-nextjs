@@ -43,13 +43,13 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Install tsx for running seed scripts
-RUN npm install -g tsx
+# Install tsx for running seed scripts and prisma CLI
+RUN npm install -g tsx prisma
 
-# Copy Prisma files including seed script
+# Copy Prisma schema, seed script, and docker config
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
-# Copy Prisma client files
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.docker.js ./prisma.config.js
+# Copy Prisma adapter and related packages
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 # Copy the generated Prisma client from lib folder
 COPY --from=builder --chown=nextjs:nodejs /app/lib ./lib
