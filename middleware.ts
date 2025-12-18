@@ -1,3 +1,6 @@
+// Use Node.js runtime instead of edge to support Prisma and crypto
+export const runtime = "nodejs";
+
 export { auth as middleware } from "@/auth";
 
 export const config = {
