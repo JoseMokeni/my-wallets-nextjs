@@ -1,6 +1,9 @@
 import { PrismaClient } from "../lib/generated/prisma";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-const prisma = new PrismaClient();
+const connectionString = process.env.DATABASE_URL!;
+const adapter = new PrismaPg({ connectionString });
+const prisma = new PrismaClient({ adapter });
 
 const defaultCategories = [
   { name: "Food & Dining", icon: "Utensils" },

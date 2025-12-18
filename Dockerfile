@@ -44,7 +44,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Install tsx for running seed scripts and prisma CLI
-RUN npm install -g tsx prisma
+RUN npm install -g tsx prisma @prisma/adapter-pg pg
 
 # Copy Prisma schema, seed script, and docker config
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
